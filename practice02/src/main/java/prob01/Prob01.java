@@ -29,7 +29,7 @@ public class Prob01 {
 			arr[9] = (((((((((num % MONEYS[0]) % MONEYS[1]) % MONEYS[2]) % MONEYS[3]) 
 					% MONEYS[4]) % MONEYS[5]) % MONEYS[6]) % MONEYS[7]) % MONEYS[8]) / MONEYS[9];
 		}
-		if(num <= MONEYS[0]) {
+		if(num < MONEYS[0]) {
 			arr[1] = num  / MONEYS[1];
 			arr[2] = (num % MONEYS[1]) / MONEYS[2];
 			arr[3] = ((num % MONEYS[1]) % MONEYS[2]) / MONEYS[3];
