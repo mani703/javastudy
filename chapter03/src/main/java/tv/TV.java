@@ -72,6 +72,6 @@ public class TV {
 	}
 	
 	public void status() {
-		System.out.println("TV[power= " + power + ", channel= " + channel + ", volume= " + volume);
+		System.out.println("TV[power= " + power + ", channel= " + channel + ", volume= " + volume + "]");
 	}
 }
