@@ -5,12 +5,26 @@ public class Goods2 {
 	private String name;
 	private int countSold;
 	private int countStock;
+	
+	public Goods2() {
+		
+	}
+	
+	public Goods2(String name, int price, int countSold, int countStock) {
+		this.name = name;
+		this.price = price;
+		this.countSold = countSold;
+		this.countStock = countStock;
+	}
 
 	public int getPrice() {
 		return price;
 	}
 
 	public void setPrice(int price) {
+		if (price < 0) {
+			price = 0;
+		}
 		this.price = price;
 	}
 
@@ -43,4 +57,7 @@ public class Goods2 {
 				"name: " + name + ", price: " + price + ", countStock: " + countStock + ", countSold: " + countSold);
 	}
 
+	public int calcDiscountPrice(double rate) {
+		return (int) (price * rate);
+	}
 }
