@@ -1,5 +1,7 @@
 package prob04;
 
+import prob01.StringUtil;
+
 public class StringUtilTest {
 
 	public static void main(String[] args) {
