@@ -45,8 +45,10 @@ public class TV {
 	}
 	
 	public void channel(int channel) {
-		if(channel < 1 || channel > 255) {
+		if(channel < 1) {
 			this.channel = 1;
+		} else if(channel > 255) {
+			this.channel = 255;
 		} else {
 			this.channel = channel;
 		}
