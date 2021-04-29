@@ -1,6 +1,6 @@
 package prob06;
 
-public class Div {
+public class Div extends Arith{
 	private int a;
 	private int b;
 	public void setValue(int a, int b) {
