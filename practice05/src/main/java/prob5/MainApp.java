@@ -22,10 +22,10 @@ public class MainApp {
 			stack.push("Hello");
 
 			System.out.println(stack.pop());
-			System.out.println(stack.pop());
+			System.out.println(stack.pop());	// exception
 			
-		} catch ( MyStackException ex) {
-			System.out.println( ex );
+		} catch (Exception ex) {
+			System.out.println(ex);
 		}
 
 	}
