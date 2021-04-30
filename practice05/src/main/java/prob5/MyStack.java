@@ -1,14 +1,14 @@
 package prob5;
 
-public class MyStack {
-	private String[] data;
+public class MyStack<T> {
+	private T[] data;
 	private int top = 0;
 
 	public MyStack(int size) {
-		data = new String[size];
+		data = (T[])new Object[size];
 	}
 
-	public void push(String data) {
+	public void push(T data) {
 		if(top == this.data.length) {
 			resize(this.data.length);
 		}
@@ -16,7 +16,7 @@ public class MyStack {
 		
 	}
 
-	public String pop() throws MyStackException{
+	public T pop() throws MyStackException{
 		top--;
 		if(top == -1) {
 			throw new MyStackException();
@@ -26,8 +26,8 @@ public class MyStack {
 	}
 
 	public void resize(int size) {
-		String[] tmp = data;
-		this.data = new String[size * 2];
+		T[] tmp = data;
+		this.data = (T[])new Object[size * 2];
 		for(int i = 0; i < size; i++) {
 			this.data[i] = tmp[i];
 		}
