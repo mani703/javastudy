@@ -14,7 +14,6 @@ public class ObjectTest02 {
 //		.equals() : 두 객체의 동질성(내용비교)
 //					Object의 기본 구현은 동일성(==) 비교와 같다.
 		System.out.println(p1.equals(p2));
-		System.out.println(p2.equals(p3));
+		System.out.println(p2.equals(p3));	
 	}
-
 }
