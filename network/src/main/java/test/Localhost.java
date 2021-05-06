@@ -1,4 +1,4 @@
-package network.test;
+package test;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -18,8 +18,8 @@ public class Localhost {
 			
 			byte[] addresses = inetAddress.getAddress();
 			for(byte address : addresses) {
-//				System.out.print(address);
-				System.out.print(address & 0x000000ff);
+				System.out.print(address);
+//				System.out.print(address & 0x000000ff);
 				System.out.print(".");
 			}
 			

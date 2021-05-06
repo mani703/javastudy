@@ -1,4 +1,4 @@
-package network.test;
+package test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,13 +26,14 @@ public class TCPServer {
 			//    클라이언트의 연결 요청을 기다린다.
 			Socket socket = serverSocket.accept(); // blocking
 
-			InetSocketAddress inetRemoteSocketAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
+			InetSocketAddress inetRemoteSocketAddress = (InetSocketAddress)socket.getRemoteSocketAddress();
+			System.out.println("RemoteSocketAddress : " + inetRemoteSocketAddress);
+			InetSocketAddress inetLocalSocketAddress = (InetSocketAddress)socket.getLocalSocketAddress();
+			System.out.println("inetLocalSocketAddress : " + inetLocalSocketAddress);
+			
 			String remoteHostAddress = inetRemoteSocketAddress.getAddress().getHostAddress();
 			int remoteHostPort = inetRemoteSocketAddress.getPort();
-			System.out.println("[server] connected by client[" + remoteHostAddress + ":" + remoteHostPort + "]");
-
-			
-			
+			System.out.println("[server] connected by client -> [" + remoteHostAddress + ":" + remoteHostPort + "]");
 			
 			try {
 				// 4. IO Stream 받아오기
@@ -69,9 +70,6 @@ public class TCPServer {
 				}
 			}
 
-			
-			
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
