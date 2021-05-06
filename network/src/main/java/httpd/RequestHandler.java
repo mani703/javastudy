@@ -1,6 +1,8 @@
 package httpd;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -17,11 +19,37 @@ public class RequestHandler extends Thread {
 		try {
 			// get IOStream
 			OutputStream outputStream = socket.getOutputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
 
 			// logging Remote Host IP Address & Port
 			InetSocketAddress inetSocketAddress = ( InetSocketAddress )socket.getRemoteSocketAddress();
 			consoleLog( "connected from " + inetSocketAddress.getAddress().getHostAddress() + ":" + inetSocketAddress.getPort() );
 					
+			String request = null;
+
+			while(true) {
+				String line = br.readLine();
+
+				// 브라우저가 연결을 끊으면,
+				if(line == null) {
+					break;
+				}
+
+				// Request Header만 읽음
+				if("".equals(line)) {
+					break;
+				}
+
+				// 첫 번째 라인만 처리
+				if(request == null) {
+					request = line;
+					break;
+				}
+			}
+
+			consoleLog(request);
+
+			
 			// 예제 응답입니다.
 			// 서버 시작과 테스트를 마친 후, 주석 처리 합니다.
 			outputStream.write( "HTTP/1.1 200 OK\r\n".getBytes( "UTF-8" ) );
