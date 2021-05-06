@@ -52,8 +52,11 @@ public class RequestHandler extends Thread {
 
 			// 요청 처리
 			String[] tokens = request.split(" ");
+			for(String s : tokens) {
+				System.out.print(s);
+			}
 			if("GET".equals(tokens[0])) {
-				consoleLog("request: " + tokens[1]);
+//				consoleLog("request: " + tokens[1]);
 				responseStaticResource(os, tokens[1], tokens[2]);
 			} else {	// methods : POST, PUT, DELETE, HEAD, CONNECT
 				/* Simple Http Server 에서는 무시 */
@@ -64,7 +67,7 @@ public class RequestHandler extends Thread {
 				// \r\n
 				// HTML 에러 문서 (./webapp/error/400.html)
 				
-				// response400Error(os, tokens[1], tokens[2]);
+				 response400Error(os, tokens[1], tokens[2]);
 			}
 			
 			// 예제 응답입니다.
@@ -88,6 +91,18 @@ public class RequestHandler extends Thread {
 			}
 		}			
 	}
+	
+	private void response400Error(OutputStream os, String url, String protocol) throws IOException{
+		url = "/error/400.html";
+		File file = new File(DOCUMENTROOT + url);
+		
+		byte[] body = Files.readAllBytes(file.toPath());
+		String contentType = Files.probeContentType(file.toPath());
+		os.write((protocol + " 400 Bad Request\r\n").getBytes("UTF-8"));
+		os.write(("Content-Type:" + contentType + "; charset=utf-8\r\n").getBytes( "UTF-8" ));
+		os.write("\r\n".getBytes());
+		os.write(body);
+	}
 
 	private void responseStaticResource(OutputStream os, String url, String protocol) throws IOException{
 		// welcom file set
@@ -103,7 +118,7 @@ public class RequestHandler extends Thread {
 			// \r\n
 			// HTML 에러 문서 (./webapp/error/404.html)
 			
-			// response404Error(os, url, protocol);
+			 response404Error(os, url, protocol);
 			return;
 		}
 		
@@ -115,6 +130,18 @@ public class RequestHandler extends Thread {
 		os.write("\r\n".getBytes());
 		os.write(body);
 
+	}
+
+	private void response404Error(OutputStream os, String url, String protocol) throws IOException{
+		url = "/error/404.html";
+		File file = new File(DOCUMENTROOT + url);
+		
+		byte[] body = Files.readAllBytes(file.toPath());
+		String contentType = Files.probeContentType(file.toPath());
+		os.write((protocol + " 404 Bad Request\r\n").getBytes("UTF-8"));
+		os.write(("Content-Type:" + contentType + "; charset=utf-8\r\n").getBytes( "UTF-8" ));
+		os.write("\r\n".getBytes());
+		os.write(body);
 	}
 
 	public void consoleLog( String message ) {
