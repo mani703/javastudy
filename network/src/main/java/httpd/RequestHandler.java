@@ -52,9 +52,6 @@ public class RequestHandler extends Thread {
 
 			// 요청 처리
 			String[] tokens = request.split(" ");
-			for(String s : tokens) {
-				System.out.print(s);
-			}
 			if("GET".equals(tokens[0])) {
 //				consoleLog("request: " + tokens[1]);
 				responseStaticResource(os, tokens[1], tokens[2]);
@@ -97,7 +94,12 @@ public class RequestHandler extends Thread {
 		File file = new File(DOCUMENTROOT + url);
 		
 		byte[] body = Files.readAllBytes(file.toPath());
+		for(byte b : body) {
+			System.out.print(b);
+		}
+		System.out.println();
 		String contentType = Files.probeContentType(file.toPath());
+		System.out.println(contentType);
 		os.write((protocol + " 400 Bad Request\r\n").getBytes("UTF-8"));
 		os.write(("Content-Type:" + contentType + "; charset=utf-8\r\n").getBytes( "UTF-8" ));
 		os.write("\r\n".getBytes());
