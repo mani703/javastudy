@@ -41,6 +41,10 @@ public class ChatClient {
 			String nickname = scanner.nextLine();
 			pw.println("join:" + nickname);
 			pw.flush();
+			String line = br.readLine();
+			if("join:ok".equals(line)) {
+				System.out.println("입장하였습니다. 즐거운 채팅 되세요");
+			}
 			
 			// 6. ChatClientReceiveThread 시작
 			new ChatClientThread(socket, br).start();
@@ -50,7 +54,7 @@ public class ChatClient {
 				System.out.print(">>");
 				String input = scanner.nextLine();
 
-				if ("quit".equals(input) == true) {
+				if ("quit".equals(input)) {
 					// 8. quit 프로토콜 처리
 					break;
 				} else {
