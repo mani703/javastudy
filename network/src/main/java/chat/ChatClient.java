@@ -43,8 +43,7 @@ public class ChatClient {
 			pw.flush();
 			
 			// 6. ChatClientReceiveThread 시작
-			Thread thread = new ChatClientThread(socket);
-			thread.start();
+			new ChatClientThread(socket, br).start();
 
 			// 7. 키보드 입력 처리
 			while (true) {
@@ -56,7 +55,8 @@ public class ChatClient {
 					break;
 				} else {
 					// 9. 메시지 처리
-					pw.println(input);
+					pw.println("message:" + input);
+					pw.flush();
 				}
 			}
 

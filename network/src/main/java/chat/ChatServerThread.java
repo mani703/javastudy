@@ -12,11 +12,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class ChatServerThread extends Thread {
-	private String nickName;
-	private Socket socket;
-	List<Writer> listWriters = null;
+	private String nickName = null;
+	private Socket socket = null;
+	List<PrintWriter> listWriters = null;
 	
-	public ChatServerThread(Socket socket, List<Writer> listWriters) {
+	public ChatServerThread(Socket socket, List<PrintWriter> listWriters) {
 		this.socket = socket;
 		this.listWriters = listWriters;
 	}
@@ -45,7 +45,7 @@ public class ChatServerThread extends Thread {
 				if("join".equals(tokens[0])) {
 					doJoin(tokens[1], pw);
 				} else if("message".equals(tokens[0])) {
-					doMessage(tokens[1], pw);
+					doMessage(tokens[1]);
 				} else if("quit".equals(tokens[0])) {
 					doQuit(pw);
 				} else {
@@ -55,39 +55,37 @@ public class ChatServerThread extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 
-	private void doQuit(Writer writer) {
+	private void doQuit(PrintWriter writer) {
 		removeWriter(writer);
 		
-		String data = nickName + "님이 퇴장 하였습니다.";
+		String data = this.nickName + "님이 퇴장 하였습니다.";
 		broadcast(data);
-		
 	}
 
-	private void removeWriter(Writer writer) {
-		
+	private void removeWriter(PrintWriter writer) {
+		synchronized (listWriters) {
+            listWriters.remove(writer);
+        }
 	}
 
-	private void doMessage(String nickName, Writer writer) {
-		
+	private void doMessage(String data) {
+		broadcast(this.nickName + ":" + data);
 	}
 
-	private void doJoin(String nickName, Writer writer) {
+	private void doJoin(String nickName, PrintWriter writer) {
 		this.nickName = nickName;
-		
-		String data = nickName + "님이 참여하였습니다.";
+		String data = this.nickName + "님이 참여하였습니다.";
 		broadcast(data);
 		
 		addWriter(writer);
 		
-		((PrintWriter)writer).println("join:ok");
-		((PrintWriter)writer).flush();
+		writer.println("join:ok");
+		writer.flush();
 	}
 
-	private void addWriter(Writer writer) {
+	private void addWriter(PrintWriter writer) {
 		synchronized(listWriters) {
 			listWriters.add(writer);
 		}
@@ -95,10 +93,9 @@ public class ChatServerThread extends Thread {
 	
 	private void broadcast(String data) {
 		synchronized (listWriters) {
-			for(Writer writer : listWriters) {
-				PrintWriter printWriter = (PrintWriter)writer;
-				printWriter.println(data);
-				printWriter.flush();
+			for(PrintWriter writer : listWriters) {
+				writer.println(data);
+				writer.flush();
 			}
 		}
 	}
