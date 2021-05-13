@@ -119,8 +119,7 @@ public class RequestHandler extends Thread {
 			// Content-Type:text/html; charset=utf-8\r\n
 			// \r\n
 			// HTML 에러 문서 (./webapp/error/404.html)
-			
-			 response404Error(os, url, protocol);
+			System.out.println("file not found:" + file.getAbsolutePath());
 			return;
 		}
 		
