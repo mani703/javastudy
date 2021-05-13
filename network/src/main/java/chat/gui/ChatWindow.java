@@ -22,13 +22,16 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class ChatWindow {
-
+	
+	BufferedReader br = null;
+	PrintWriter pw = null;
 	private Frame frame;
 	private Panel pannel;
 	private Button buttonSend;
 	private TextField textField;
 	private TextArea textArea;
 	Socket socket = null;
+	private String nickName = null;
 
 	public ChatWindow(String nickName, Socket socket) {
 		frame = new Frame(nickName);
@@ -37,6 +40,7 @@ public class ChatWindow {
 		textField = new TextField();
 		textArea = new TextArea(30, 80);
 		this.socket = socket;
+		this.nickName = nickName;
 	}
 
 	public void show() {
@@ -88,15 +92,15 @@ public class ChatWindow {
 		 * 2. IOStream 생성
 		 */
 		try {
-			BufferedReader br = new BufferedReader(
+			br = new BufferedReader(
 					new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8),
+			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8),
 					true);
 
 			/**
 			 * 3. Chat Cilent Thread 생성(Receive Thread)
 			 */
-			new ChatClientThread(socket, br).start();
+			new ChatClientThread(br).start();
 		}
 		catch (IOException e1) {
 			e1.printStackTrace();
@@ -104,13 +108,14 @@ public class ChatWindow {
 	}
 
 	private void finish() {
-		System.out.println("소켓 닫기 or 방나가기 프로토콜 구현");
+		pw.println("quit");
 		System.exit(0);
 	}
 
 	private void sendMessage() {
 		String message = textField.getText();
-		System.out.println("프로토콜 구현: " + message);
+		pw.println("message:" + message);
+		updateTextArea(nickName + ":" + message);
 		textField.setText("");
 		textField.requestFocus();
 	}
@@ -121,11 +126,9 @@ public class ChatWindow {
 	}
 
 	private class ChatClientThread extends Thread {
-		Socket socket = null;
 		BufferedReader br = null;
 
-		ChatClientThread(Socket socket, BufferedReader br) {
-			this.socket = socket;
+		ChatClientThread(BufferedReader br) {
 			this.br = br;
 		}
 

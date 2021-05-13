@@ -22,13 +22,11 @@ public class UDPTimeServer {
 				DatagramPacket receivePacket = new DatagramPacket(new byte[BUFFER_SIZE], BUFFER_SIZE);
 				socket.receive(receivePacket); // blocking
 				
-				byte[] receiveData = receivePacket.getData();
-				int length = receivePacket.getLength();
-				String message = new String(receiveData, 0, length, "utf-8");
-				
-				System.out.println("[server] receive: " + message);
 				// 3. 데이터 송신
 				String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
+				byte[] sendData = now.getBytes("uft-8");
+				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
+				socket.send(sendPacket);
 				
 				
 				

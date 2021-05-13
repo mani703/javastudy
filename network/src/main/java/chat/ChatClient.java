@@ -11,8 +11,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import echo.EchoServer;
-
 public class ChatClient {
 	private static final int SERVER_PORT = ChatServer.PORT;
 
@@ -47,7 +45,7 @@ public class ChatClient {
 			}
 			
 			// 6. ChatClientReceiveThread 시작
-			new ChatClientThread(socket, br).start();
+			new ChatClientThread(br).start();
 
 			// 7. 키보드 입력 처리
 			while (true) {

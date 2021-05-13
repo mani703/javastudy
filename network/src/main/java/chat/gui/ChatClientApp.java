@@ -17,6 +17,7 @@ public class ChatClientApp {
 	private static final int SERVER_PORT = ChatServer.PORT;
 
 	public static void main(String[] args) {
+		
 		String name = null;
 		Scanner scanner = new Scanner(System.in);
 		Socket socket = null;
@@ -33,7 +34,6 @@ public class ChatClientApp {
 
 			System.out.println("대화명은 한글자 이상 입력해야 합니다.\n");
 		}
-
 		scanner.close();
 		
 		try {
@@ -51,14 +51,12 @@ public class ChatClientApp {
 					true);
 			
 			// 4. join
-			System.out.print("닉네임>>");
-			String nickName = scanner.nextLine();
-			pw.println("join:" + nickName);
+			pw.println("join:" + name);
 			pw.flush();
 			
 			String line = br.readLine();
 			if ("join:ok".equals(line)) {
-				new ChatWindow(nickName, socket).show();
+				new ChatWindow(name, socket).show();
 			}
 			
 		} catch (IOException e) {
